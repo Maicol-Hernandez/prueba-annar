@@ -6,36 +6,31 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 })
 export class ClientService {
 
+  _url = "http://190.60.101.59:6003/api/Personas?id=1"
+  _urlPost = "http://190.60.101.59:6003/api/Personas/"
+  // _url = "https://jsonplaceholder.typicode.com/todos/10"
   constructor(
     private http: HttpClient
   ) { }
 
 
-  postRequestRegistroUsers(route: string, data?: any, token?: string) {
+  postRequestRegistroUsers(data?: any) {
     let config: any = {
       reponseType: "json"
     }
 
-    if (token) {
-      const header = new HttpHeaders().set('Authorization', `Bearer ${token}`)
-      config['header'] = header;
+    
+      const headers = new HttpHeaders().set('Type-content', 'aplication/json')
 
-    }
-    return this.http.post(route, data, config);
+
+    return this.http.post(this._urlPost, data, { headers: headers });
   }
 
+  getRequestUssers() {
 
-  getRequestUssers(route: string, token?: string) {
+    const headers = new HttpHeaders().set('Type-content', 'aplication/json')
 
-    let config: any = {
-      responseType: "json"
-    }
-
-    if (token) {
-      const heder = new HttpHeaders().set('Authorization', `Bearer ${token}`)
-      config['headers'] = heder
-    }
-    return this.http.get(route, config);
+    return this.http.get(this._url, { headers: headers });
   }
 
 

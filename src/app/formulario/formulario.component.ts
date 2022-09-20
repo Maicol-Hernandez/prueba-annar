@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 })
 export class FormularioComponent implements OnInit {
 
-  form: any;
-  // form: FormGroup;
+  // form: any;
+  form!: FormGroup;
 
   constructor(
 
@@ -37,47 +37,34 @@ export class FormularioComponent implements OnInit {
     console.log('this.form :>> ', this.form);
 
 
+    this.client.getRequestUssers().subscribe(res => {
+      console.log('res :>> ', res);
+    })
 
   }
 
 
   OnSubmit() {
 
-    console.log('formData :>> ', this.form.value)
+    let data = {
+      idPersona: Math.random(),
+      documento: this.form.value.documento,
+      nombres: this.form.value.nombres,
+      apellidos: this.form.value.apellidos,
+      telefono: this.form.value.telefono,
+      correo: this.form.value.correo,
+      direccion: this.form.value.direcion
+    }
 
-    // if (this.form.valid) {
-
-
-    // const formData: any = new FormData();
-
-    // formData.forEach((item: any) => {
-    //   console.log('formData :>> ', item);
-
-    // });
-
-
-
-    this.client.postRequestRegistroUsers('http://190.60.101.59:6003/api/Personas', this.form.value).subscribe(
+    this.client.postRequestRegistroUsers(data).subscribe(
       (response: any) => {
-        var data: any = {
-          nombre: this.form.value.nombreEmpresa,
-          tipoE: this.form.value.tipoEmpresa,
-          direccionE: this.form.value.DireccionEmpresa,
-          numeroE: this.form.value.NumeroEmpresa,
-          numeroS: this.form.value.NumeroSecundario,
-          emailE: this.form.value.emailEmpresa,
-          horario: this.form.value.Horario,
-          logo: response.img, //LO que obtenga de la respuesta
-          // correo: this.auth.getCourrentUserCorreo()
-        }
-        // this.registrarEmpresaDB(data);
+
+        console.log('response :>> ', response);
       },
       (error) => {
         console.error(error);
       }
     )
-
-    // }
 
   }
 }
