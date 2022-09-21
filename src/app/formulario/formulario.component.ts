@@ -10,61 +10,62 @@ import { Router } from '@angular/router';
 })
 export class FormularioComponent implements OnInit {
 
-  // form: any;
-  form!: FormGroup;
+  public formRegistro: FormGroup;
 
   constructor(
 
-    public fb: FormBuilder,
-    // public form: FormGroup,
-    private route: Router,
+    private fb: FormBuilder,
     private client: ClientService,
 
-  ) { }
-
-  ngOnInit(): void {
-
-    this.form = this.fb.group({
-      // idPersona: ['', Validators.required],
-      documento: ['', Validators.required],
+  ) {
+    this.formRegistro = this.fb.group({
+      idPersona: ['', Validators.required, Validators.maxLength(5)],
+      documento: ['', Validators.required, Validators.maxLength(10)],
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
-      telefono: ['', Validators.required],
-      correo: ['', Validators.required],
+      telefono: ['', Validators.required, Validators.maxLength(10)],
+      correo: ['', Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )],
       direcion: ['', Validators.required],
     });
 
-    console.log('this.form :>> ', this.form);
+    console.log('this.formRegistro :>> ', this.formRegistro);
 
+  }
 
-    this.client.getRequestUssers().subscribe(res => {
-      console.log('res :>> ', res);
-    })
+  ngOnInit(): void {
+
 
   }
 
 
-  OnSubmit() {
+  onSubmit() {
+    if (this.formRegistro.valid) {
 
-    let data = {
-      idPersona: Math.random(),
-      documento: this.form.value.documento,
-      nombres: this.form.value.nombres,
-      apellidos: this.form.value.apellidos,
-      telefono: this.form.value.telefono,
-      correo: this.form.value.correo,
-      direccion: this.form.value.direcion
-    }
 
-    this.client.postRequestRegistroUsers(data).subscribe(
-      (response: any) => {
-
-        console.log('response :>> ', response);
-      },
-      (error) => {
-        console.error(error);
+      let data = {
+        idPersona: this.formRegistro.value.documento,
+        documento: this.formRegistro.value.documento,
+        nombres: this.formRegistro.value.nombres,
+        apellidos: this.formRegistro.value.apellidos,
+        telefono: this.formRegistro.value.telefono,
+        correo: this.formRegistro.value.correo,
+        direccion: this.formRegistro.value.direcion
       }
-    )
 
+      this.client.postRequestRegistroUsers(data).subscribe(
+        (response: any) => {
+
+          console.log('response :>> ', response);
+          this.ngOnInit()
+        },
+        (error) => {
+          console.error(error);
+        }
+      )
+
+    }
   }
+
+
 }
