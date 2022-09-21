@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -9,9 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 
-import { FormularioComponent } from './formulario/formulario.component';
 import { HomeComponent } from './home/home.component';
-import { HttpClientModule } from '@angular/common/http';
+import { FormularioComponent } from './formulario/formulario.component';
 
 
 @NgModule({
@@ -21,12 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
-    FormsModule,
     ReactiveFormsModule,
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -34,6 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
 
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class AppModule { }

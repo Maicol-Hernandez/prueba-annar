@@ -10,54 +10,39 @@ import { Router } from '@angular/router';
 })
 export class FormularioComponent implements OnInit {
 
-  public formRegistro: FormGroup;
+  formRegistro!: FormGroup;
 
   constructor(
 
-    private fb: FormBuilder,
+    private readonly fb: FormBuilder,
     private client: ClientService,
 
-  ) {
-    this.formRegistro = this.fb.group({
-      idPersona: ['', Validators.required, Validators.maxLength(5)],
-      documento: ['', Validators.required, Validators.maxLength(10)],
-      nombres: ['', Validators.required],
-      apellidos: ['', Validators.required],
-      telefono: ['', Validators.required, Validators.maxLength(10)],
-      correo: ['', Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )],
-      direcion: ['', Validators.required],
-    });
-
-    console.log('this.formRegistro :>> ', this.formRegistro);
-
-  }
+  ) { }
 
   ngOnInit(): void {
-
-
+    this.formRegistro = this.initForm()
   }
 
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.formRegistro.valid) {
 
 
       let data = {
-        idPersona: this.formRegistro.value.documento,
+        idPersona: this.formRegistro.value.idPersona,
         documento: this.formRegistro.value.documento,
         nombres: this.formRegistro.value.nombres,
         apellidos: this.formRegistro.value.apellidos,
         telefono: this.formRegistro.value.telefono,
         correo: this.formRegistro.value.correo,
-        direccion: this.formRegistro.value.direcion
+        direccion: this.formRegistro.value.direccion
       }
 
       this.client.postRequestRegistroUsers(data).subscribe(
         (response: any) => {
 
           console.log('response :>> ', response);
-          this.ngOnInit()
+          // this.ngOnInit()
         },
         (error) => {
           console.error(error);
@@ -65,6 +50,19 @@ export class FormularioComponent implements OnInit {
       )
 
     }
+  }
+
+  initForm(): FormGroup {
+    return this.fb.group({
+      idPersona: ['', Validators.required, Validators.maxLength(5)],
+      documento: ['', Validators.required, Validators.maxLength(10)],
+      nombres: ['', Validators.required],
+      apellidos: ['', Validators.required],
+      telefono: ['', Validators.required, Validators.maxLength(10)],
+      correo: ['', Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )],
+      direccion: ['', Validators.required],
+    })
   }
 
 
